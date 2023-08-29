@@ -2,15 +2,43 @@ sp_helpstatus
 
 -- 1. 테이블 생성
 
-	create table	sample_table
+	create table	#sample_table
 	(
-		col1	INT not null primary key,
+		col1	INT not null primary key, -- 기본키를 약식으로 설정하는 방법
 		col2	varchar(10),
 		col3	varchar(10),
 		col4	varchar(10),
 		col5	varchar(10),
 		col6	varchar(10),
 		col7	varchar(10)
+	)
+
+	create table	#sample_table2
+	(
+		col1	INT not null, -- 기본키를 약식으로 설정하는 방법
+		col2	varchar(10),
+		col3	varchar(10),
+		col4	varchar(10),
+		col5	varchar(10),
+		col6	varchar(10),
+		col7	varchar(10),
+		
+		constraint primary_key_name primary key (col1) -- 기본키를 설정하는 방법
+		-- 2개 이상의 컬럼을 묶어서 기본키를 설정하고 싶을 경우 아래와 같은 방식으로설정
+		-- constraint primary_key_name primary key (col1, col2)
+	)
+
+
+-- 1-1. 외래키를 이용한 테이블 생성
+	-- 테이블 간 데이터의 참조 무결성을 지키기 위해서 매우 유용한 기능!
+
+	create table	#sample_table3
+	(
+		col1	INT not null foreign key references	#sample_table(col1),
+		col_a	varchar(10) not null,
+		col_b	varchar(10)
+
+		constraint primary_key_name primary key (col1, col_a)
 	)
 
 
@@ -64,3 +92,9 @@ sp_helpstatus
 	select	count(*)
 	from	TEMP_MART.sys.columns
 	where	object_id = OBJECT_ID('TEMP_MART.dbo.M_MONTH_202302_TEST')
+
+
+-- 7. 컬럼 구성 확인
+	select	*
+	from	information_schema.columns
+	where	table_name = ''
