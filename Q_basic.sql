@@ -1,4 +1,91 @@
 /*
+Test 데이터셋 생성
+*/
+
+	create table	#EMP
+	(
+		empno	numeric(10) primary key,
+		ename	varchar(20),
+		deptno	numeric(10),
+		mgr		numeric(10),
+		job		varchar(20),
+		sal		numeric(10)
+	)
+
+	insert into #EMP values (1000, 'TEST1', 20, NULL, 'CLERK', 800)
+	insert into #EMP values (1001, 'TEST2', 30, 1000, 'SALESMAN', 1600)
+	insert into #EMP values (1002, 'TEST3', 30, 1000, 'SALESMAN', 1250)
+	insert into #EMP values (1003, 'TEST4', 20, 1000, 'MANAGER', 2975)
+	insert into #EMP values (1004, 'TEST5', 30, 1000, 'SALESMAN', 1250)
+	insert into #EMP values (1005, 'TEST6', 30, 1001, 'MANAGER', 2850)
+	insert into #EMP values (1006, 'TEST7', 10, 1001, 'MANAGER', 2450)
+	insert into #EMP values (1007, 'TEST8', 20, 1006, 'ANALYST', 3000)
+	insert into #EMP values (1008, 'TEST9', 30, 1006, 'PRESIDENT', 5000)
+	insert into #EMP values (1009, 'TEST10', 30, 1002, 'SALESMAN', 1500)
+	insert into #EMP values (1010, 'TEST11', 20, 1002, 'CLERK', 1100)
+	insert into #EMP values (1011, 'TEST12', 30, 1001, 'CLERK', 950)
+	insert into #EMP values (1012, 'TEST13', 20, 1000, 'ANALYST', 3000)
+	insert into #EMP values (1013, 'TEST14', 10, 1000, 'CLERK', 1300)
+
+	select	*
+	from	#EMP
+
+
+/*
+GROUP 함수
+
+	1. rollup
+	2. grouping
+	3. grouping sets
+	4. cube
+*/
+
+	-- 1. rollup
+	select	IIF(deptno is null, '전체합계', cast(deptno as varchar)),
+			sum(sal)
+	from	#EMP
+	group by	rollup(deptno);
+
+
+	select	deptno,
+			job,
+			sum(sal)
+	from	#EMP
+	group by	rollup(deptno, job);
+
+
+	-- 2. grouping
+	select	deptno,
+			grouping(deptno),
+			job,
+			grouping(job),
+			sum(sal)
+	from	#EMP
+	group by	rollup(deptno, job);
+
+
+	select	IIF(deptno is null, '전체합계', cast(deptno as varchar)),
+			grouping(deptno),
+			IIF(job is null, '부서합계', cast(job as varchar)),
+			grouping(job),
+			sum(sal)
+	from	#EMP
+	group by	rollup(deptno, job);
+
+
+	select	deptno,
+			IIF(grouping(deptno) = 1, '전체합계', NULL),
+			job,
+			IIF(grouping(job) = 1, '부서합계', NULL),
+			sum(sal)
+	from	#EMP
+	group by	rollup(deptno, job);
+
+
+	-- 3. grouping sets
+
+
+/*
 
 ROW NUMBER()
 
