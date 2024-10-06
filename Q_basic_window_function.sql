@@ -221,11 +221,9 @@ group by	category, product
 
 select	*,
 		avg(quantity) over (partition by category order by product),
+		-- 누적 평균의 경우, partition by 기준 범위 내에서, order by 기준의 합 / 행수 로 계산
 		avg(quantity) over (partition by category),
+		-- 그룹 평균은 partition by 기준 범위 합 / 행 개수
 		avg(quantity) over ()
+		-- 전체 평균 계산
 from	#sales
-
-select 		count(*),
-		sum(quantity) from #sales
-
-select 141/15
