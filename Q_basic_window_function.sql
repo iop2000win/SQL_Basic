@@ -226,5 +226,9 @@ select	*,
 		-- 그룹 평균은 partition by 기준 범위 합 / 행 개수
 		avg(quantity) over ()
 		-- 전체 평균 계산
+<<<<<<< HEAD
 from	#sales
 
+=======
+from	#sales
+>>>>>>> 075667d895ea6be654312579e1cad7687a565af7
